@@ -243,23 +243,7 @@
     <li>description and source-code<pre class="apidocCodePre">america = function (str) {
   return sequencer(colors.maps[map], str);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-});
-
-addProperty(&#x22;random&#x22;, function(){
-  return colors.random(this);
-});
-
-addProperty(&#x22;america&#x22;, function(){
-  return colors.<span class="apidocCodeKeywordSpan">america</span>(this);
-});
-
-//
-// Iterate through all default styles and colors
-//
-var x = Object.keys(colors.styles);
-x.forEach(function (style) {
-...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
 
@@ -306,23 +290,7 @@ If you are writing good code you will never have an issue with the first approac
     <li>description and source-code<pre class="apidocCodePre">random = function (str) {
   return sequencer(colors.maps[map], str);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-});
-
-addProperty(&#x22;rainbow&#x22;, function(){
-  return colors.rainbow(this);
-});
-
-addProperty(&#x22;random&#x22;, function(){
-  return colors.<span class="apidocCodeKeywordSpan">random</span>(this);
-});
-
-addProperty(&#x22;america&#x22;, function(){
-  return colors.america(this);
-});
-
-//
-...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
 
@@ -379,23 +347,7 @@ help: &#x27;cyan&#x27;,
     <li>description and source-code<pre class="apidocCodePre">strip = function (str){
   return (&#x22;&#x22; + str).replace(/\x1B\[\d+m/g, &#x27;&#x27;);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-      var exploded = this.split(&#x22;&#x22;), i = 0;
-      exploded = exploded.map(map);
-      return exploded.join(&#x22;&#x22;);
-    }
-};
-
-addProperty(&#x27;strip&#x27;, function () {
-  return colors.<span class="apidocCodeKeywordSpan">strip</span>(this);
-});
-
-addProperty(&#x27;stripColors&#x27;, function () {
-  return colors.strip(this);
-});
-
-addProperty(&#x22;trap&#x22;, function(){
-...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
 
@@ -429,23 +381,7 @@ addProperty(&#x22;trap&#x22;, function(){
 
   return ansiStyles[style].open + str + ansiStyles[style].close;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-
-//
-// Iterate through all default styles and colors
-//
-var x = Object.keys(colors.styles);
-x.forEach(function (style) {
-  addProperty(style, function () {
-    return colors.<span class="apidocCodeKeywordSpan">stylize</span>(this, style);
-  });
-});
-
-function applyTheme(theme) {
-  //
-  // Remark: This is a list of methods that exist
-  // on String that you should not overwrite.
-...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
 
@@ -633,23 +569,7 @@ If you are writing good code you will never have an issue with the first approac
   // don&#x27;t summon him
   return heComes(text, options);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-});
-
-addProperty(&#x22;trap&#x22;, function(){
-  return colors.trap(this);
-});
-
-addProperty(&#x22;zalgo&#x22;, function(){
-  return colors.<span class="apidocCodeKeywordSpan">zalgo</span>(this);
-});
-
-addProperty(&#x22;zebra&#x22;, function(){
-  return colors.zebra(this);
-});
-
-addProperty(&#x22;rainbow&#x22;, function(){
-...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
 
@@ -664,23 +584,7 @@ addProperty(&#x22;rainbow&#x22;, function(){
     <li>description and source-code<pre class="apidocCodePre">zebra = function (str) {
   return sequencer(colors.maps[map], str);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-});
-
-addProperty(&#x22;zalgo&#x22;, function(){
-  return colors.zalgo(this);
-});
-
-addProperty(&#x22;zebra&#x22;, function(){
-  return colors.<span class="apidocCodeKeywordSpan">zebra</span>(this);
-});
-
-addProperty(&#x22;rainbow&#x22;, function(){
-  return colors.rainbow(this);
-});
-
-addProperty(&#x22;random&#x22;, function(){
-...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
 
@@ -711,23 +615,7 @@ addProperty(&#x22;random&#x22;, function(){
     case 2: return colors.blue(letter)
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-});
-
-addProperty(&#x22;random&#x22;, function(){
-  return colors.random(this);
-});
-
-addProperty(&#x22;america&#x22;, function(){
-  return colors.<span class="apidocCodeKeywordSpan">america</span>(this);
-});
-
-//
-// Iterate through all default styles and colors
-//
-var x = Object.keys(colors.styles);
-x.forEach(function (style) {
-...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
 
@@ -778,23 +666,7 @@ If you are writing good code you will never have an issue with the first approac
     <li>description and source-code<pre class="apidocCodePre">random = function (letter, i, exploded) {
   return letter === &#x22; &#x22; ? letter : colors[available[Math.round(Math.random() * (available.length - 1))]](letter);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-});
-
-addProperty(&#x22;rainbow&#x22;, function(){
-  return colors.rainbow(this);
-});
-
-addProperty(&#x22;random&#x22;, function(){
-  return colors.<span class="apidocCodeKeywordSpan">random</span>(this);
-});
-
-addProperty(&#x22;america&#x22;, function(){
-  return colors.america(this);
-});
-
-//
-...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
 
@@ -809,23 +681,7 @@ addProperty(&#x22;america&#x22;, function(){
     <li>description and source-code<pre class="apidocCodePre">zebra = function (letter, i, exploded) {
   return i % 2 === 0 ? letter : colors.inverse(letter);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-});
-
-addProperty(&#x22;zalgo&#x22;, function(){
-  return colors.zalgo(this);
-});
-
-addProperty(&#x22;zebra&#x22;, function(){
-  return colors.<span class="apidocCodeKeywordSpan">zebra</span>(this);
-});
-
-addProperty(&#x22;rainbow&#x22;, function(){
-  return colors.rainbow(this);
-});
-
-addProperty(&#x22;random&#x22;, function(){
-...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
 
