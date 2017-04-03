@@ -1,11 +1,13 @@
-# api documentation for  [colors (v1.1.2)](https://github.com/Marak/colors.js)  [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-colors.svg)](https://travis-ci.org/npmdoc/node-npmdoc-colors)
+# api documentation for  [colors (v1.1.2)](https://github.com/Marak/colors.js)  [![npm package](https://img.shields.io/npm/v/npmdoc-colors.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-colors) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-colors.svg)](https://travis-ci.org/npmdoc/node-npmdoc-colors)
 #### get colors in your node.js console
 
 [![NPM](https://nodei.co/npm/colors.png?downloads=true)](https://www.npmjs.com/package/colors)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-colors/build/screen-capture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-colors_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-colors/build..beta..travis-ci.org/apidoc.html)
+[![apidoc](https://npmdoc.github.io/node-npmdoc-colors/build/screenCapture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-colors_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-colors/build..beta..travis-ci.org/apidoc.html)
 
-![package-listing](https://npmdoc.github.io/node-npmdoc-colors/build/screen-capture.npmPackageListing.svg)
+![npmPackageListing](https://npmdoc.github.io/node-npmdoc-colors/build/screenCapture.npmPackageListing.svg)
+
+![npmPackageDependencyTree](https://npmdoc.github.io/node-npmdoc-colors/build/screenCapture.npmPackageDependencyTree.svg)
 
 
 
@@ -107,23 +109,7 @@ america = function (str) {
 ```
 - example usage
 ```shell
-...
-});
-
-addProperty("random", function(){
-  return colors.random(this);
-});
-
-addProperty("america", function(){
-  return colors.america(this);
-});
-
-//
-// Iterate through all default styles and colors
-//
-var x = Object.keys(colors.styles);
-x.forEach(function (style) {
-...
+n/a
 ```
 
 #### <a name="apidoc.element.colors.rainbow"></a>[function <span class="apidocSignatureSpan">colors.</span>rainbow (str)](#apidoc.element.colors.rainbow)
@@ -164,23 +150,7 @@ random = function (str) {
 ```
 - example usage
 ```shell
-...
-});
-
-addProperty("rainbow", function(){
-  return colors.rainbow(this);
-});
-
-addProperty("random", function(){
-  return colors.random(this);
-});
-
-addProperty("america", function(){
-  return colors.america(this);
-});
-
-//
-...
+n/a
 ```
 
 #### <a name="apidoc.element.colors.setTheme"></a>[function <span class="apidocSignatureSpan">colors.</span>setTheme (theme)](#apidoc.element.colors.setTheme)
@@ -231,23 +201,7 @@ strip = function (str){
 ```
 - example usage
 ```shell
-...
-      var exploded = this.split(""), i = 0;
-      exploded = exploded.map(map);
-      return exploded.join("");
-    }
-};
-
-addProperty('strip', function () {
-  return colors.strip(this);
-});
-
-addProperty('stripColors', function () {
-  return colors.strip(this);
-});
-
-addProperty("trap", function(){
-...
+n/a
 ```
 
 #### <a name="apidoc.element.colors.stripColors"></a>[function <span class="apidocSignatureSpan">colors.</span>stripColors (str)](#apidoc.element.colors.stripColors)
@@ -275,23 +229,7 @@ function stylize(str, style) {
 ```
 - example usage
 ```shell
-...
-
-//
-// Iterate through all default styles and colors
-//
-var x = Object.keys(colors.styles);
-x.forEach(function (style) {
-  addProperty(style, function () {
-    return colors.stylize(this, style);
-  });
-});
-
-function applyTheme(theme) {
-  //
-  // Remark: This is a list of methods that exist
-  // on String that you should not overwrite.
-...
+n/a
 ```
 
 #### <a name="apidoc.element.colors.trap"></a>[function <span class="apidocSignatureSpan">colors.</span>trap (text, options)](#apidoc.element.colors.trap)
@@ -473,23 +411,7 @@ function zalgo(text, options) {
 ```
 - example usage
 ```shell
-...
-});
-
-addProperty("trap", function(){
-  return colors.trap(this);
-});
-
-addProperty("zalgo", function(){
-  return colors.zalgo(this);
-});
-
-addProperty("zebra", function(){
-  return colors.zebra(this);
-});
-
-addProperty("rainbow", function(){
-...
+n/a
 ```
 
 #### <a name="apidoc.element.colors.zebra"></a>[function <span class="apidocSignatureSpan">colors.</span>zebra (str)](#apidoc.element.colors.zebra)
@@ -501,23 +423,7 @@ zebra = function (str) {
 ```
 - example usage
 ```shell
-...
-});
-
-addProperty("zalgo", function(){
-  return colors.zalgo(this);
-});
-
-addProperty("zebra", function(){
-  return colors.zebra(this);
-});
-
-addProperty("rainbow", function(){
-  return colors.rainbow(this);
-});
-
-addProperty("random", function(){
-...
+n/a
 ```
 
 
@@ -538,23 +444,7 @@ america = function (letter, i, exploded) {
 ```
 - example usage
 ```shell
-...
-});
-
-addProperty("random", function(){
-  return colors.random(this);
-});
-
-addProperty("america", function(){
-  return colors.america(this);
-});
-
-//
-// Iterate through all default styles and colors
-//
-var x = Object.keys(colors.styles);
-x.forEach(function (style) {
-...
+n/a
 ```
 
 #### <a name="apidoc.element.colors.maps.rainbow"></a>[function <span class="apidocSignatureSpan">colors.maps.</span>rainbow (letter, i, exploded)](#apidoc.element.colors.maps.rainbow)
@@ -599,23 +489,7 @@ random = function (letter, i, exploded) {
 ```
 - example usage
 ```shell
-...
-});
-
-addProperty("rainbow", function(){
-  return colors.rainbow(this);
-});
-
-addProperty("random", function(){
-  return colors.random(this);
-});
-
-addProperty("america", function(){
-  return colors.america(this);
-});
-
-//
-...
+n/a
 ```
 
 #### <a name="apidoc.element.colors.maps.zebra"></a>[function <span class="apidocSignatureSpan">colors.maps.</span>zebra (letter, i, exploded)](#apidoc.element.colors.maps.zebra)
@@ -627,23 +501,7 @@ zebra = function (letter, i, exploded) {
 ```
 - example usage
 ```shell
-...
-});
-
-addProperty("zalgo", function(){
-  return colors.zalgo(this);
-});
-
-addProperty("zebra", function(){
-  return colors.zebra(this);
-});
-
-addProperty("rainbow", function(){
-  return colors.rainbow(this);
-});
-
-addProperty("random", function(){
-...
+n/a
 ```
 
 
