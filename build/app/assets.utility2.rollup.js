@@ -135,6 +135,7 @@
             }
             // search modulePathList
             [
+                ['node_modules'],
                 modulePathList,
                 require('module').globalPaths
             ].some(function (modulePathList) {
@@ -603,12 +604,8 @@ local.templateApidocMd = '\
             );
             local.objectSetDefault(options, {
                 env: {},
-                packageJson: {}
+                packageJson: JSON.parse(readExample('package.json'))
             });
-            try {
-                options.packageJson = JSON.parse(readExample('package.json'));
-            } catch (ignore) {
-            }
             Object.keys(options.packageJson).forEach(function (key) {
                 if (key[0] === '_') {
                     delete options.packageJson[key];
@@ -616,6 +613,13 @@ local.templateApidocMd = '\
                     options.env['npm_package_' + key] = options.packageJson[key];
                 }
             });
+            if (options.modeRenderFast) {
+                // render apidoc
+                options.result = local.templateRender(options.template, options)
+                    .trim()
+                    .replace((/ +$/gm), '') + '\n';
+                return options.result;
+            }
             local.objectSetDefault(options, {
                 blacklistDict: { global: global },
                 circularList: [global],
@@ -628,24 +632,21 @@ local.templateApidocMd = '\
                 template: local.templateApidocHtml
             });
             // init exampleList
-            try {
-                options.exampleList = options.exampleList.concat(options.exampleFileList.concat(
-                    local.fs.readdirSync(options.dir)
-                        .sort()
-                        .filter(function (file) {
-                            return file.indexOf(options.env.npm_package_main) === 0 ||
-                                (/^(?:readme)\b/i).test(file) ||
-                                (/^(?:index|lib|test)\b.*\.js$/i).test(file);
-                        })
-                ).map(readExample));
-            } catch (ignore) {
-            }
+            options.exampleList = options.exampleList.concat(options.exampleFileList.concat(
+                local.fs.readdirSync(options.dir)
+                    .sort()
+                    .filter(function (file) {
+                        return file.indexOf(options.env.npm_package_main) === 0 ||
+                            (/^(?:readme)\b/i).test(file) ||
+                            (/^(?:index|lib|test)\b.*\.js$/i).test(file);
+                    })
+            ).map(readExample));
             // init moduleMain
             try {
                 moduleMain = {};
                 moduleMain = options.moduleDict[options.env.npm_package_name] =
                     options.moduleDict[options.env.npm_package_name] ||
-                    require(options.dir + (process.env.npm_package_buildNpmdocMain || ''));
+                    require(options.dir);
             } catch (ignore) {
             }
             options.moduleDict[options.env.npm_package_name] = moduleMain;
@@ -693,7 +694,7 @@ local.templateApidocMd = '\
             });
             module = options.moduleExtraDict[options.env.npm_package_name] =
                 options.moduleExtraDict[options.env.npm_package_name] || {};
-            options.libFileList.forEach(function (file) {
+            options.libFileList.some(function (file) {
                 try {
                     tmp = {};
                     tmp.name = local.path.basename(file)
@@ -734,7 +735,9 @@ local.templateApidocMd = '\
                     options.exampleList.push(readExample(file));
                 } catch (ignore) {
                 }
+                return options.exampleList.length <= 20;
             });
+            options.exampleList = options.exampleList.slice(0, 20);
             local.apidocModuleDictAdd(options, options.moduleExtraDict);
             // normalize moduleMain
             moduleMain = options.moduleDict[options.env.npm_package_name] =
@@ -2689,6 +2692,59 @@ local.templateApidocMd = '\
             // return callback
             return onParallel;
         };
+
+        local.onParallelList = function (options, onEach, onError) {
+        /*
+         * this function will
+         * 1. async-run onEach in parallel,
+         *    with the given options.rateLimit and options.retryLimit
+         * 2. call onError when done
+         */
+            var ii, onEach2, onParallel;
+            onEach2 = function () {
+                while (ii + 1 < options.list.length && onParallel.counter < options.rateLimit) {
+                    ii += 1;
+                    onParallel.ii += 1;
+                    onParallel.remaining -= 1;
+                    onEach({
+                        element: options.list[ii],
+                        ii: ii,
+                        list: options.list,
+                        retry: 0
+                    }, onParallel);
+                }
+            };
+            onParallel = local.onParallel(onError, onEach2, function (error, data) {
+                if (error && data && data.retry < options.retryLimit) {
+                    local.onErrorDefault(error);
+                    data.retry += 1;
+                    setTimeout(function () {
+                        onParallel.counter -= 1;
+                        onEach(data, onParallel);
+                    }, 1000);
+                    return true;
+                }
+            });
+            onParallel.counter += 1;
+            ii = -1;
+            onParallel.ii = -1;
+            onParallel.remaining = options.list.length;
+            options.rateLimit = Number(options.rateLimit) || 4;
+            options.rateLimit = Math.max(options.rateLimit, 3);
+            options.retryLimit = Number(options.retryLimit) || 2;
+            onEach2();
+            onParallel();
+        };
+
+        local.onReadyAfter = function (onError) {
+        /*
+         * this function will call onError when onReadyBefore.counter === 0
+         */
+            local.onReadyBefore.counter += 1;
+            local.taskCreate({ key: 'utility2.onReadyAfter' }, null, onError);
+            local.onResetAfter(local.onReadyBefore);
+            return onError;
+        };
     }());
     switch (local.modeJs) {
 
@@ -2701,7 +2757,6 @@ local.templateApidocMd = '\
          * this function will delete the github file
          * https://developer.github.com/v3/repos/contents/#delete-a-file
          */
-            var onParallel;
             options = { message: options.message, url: options.url };
             local.onNext(options, function (error, data) {
                 switch (options.modeNext) {
@@ -2721,17 +2776,14 @@ local.templateApidocMd = '\
                         return;
                     }
                     // delete tree
-                    onParallel = local.onParallel(options.onNext);
-                    onParallel.counter += 1;
-                    data.forEach(function (element) {
+                    local.onParallelList({ list: data }, function (data, onParallel) {
                         onParallel.counter += 1;
                         // recurse
                         local.contentDelete({
                             message: options.message,
-                            url: element.url
+                            url: data.element.url
                         }, onParallel);
-                    });
-                    onParallel();
+                    }, options.onNext);
                     break;
                 default:
                     onError();
@@ -2958,18 +3010,14 @@ local.templateApidocMd = '\
          * this function will touch options.urlList in parallel
          * https://developer.github.com/v3/repos/contents/#update-a-file
          */
-            var onParallel;
-            onParallel = local.onParallel(onError);
-            onParallel.counter += 1;
-            options.urlList.forEach(function (url) {
+            local.onParallelList({ list: options.urlList }, function (data, onParallel) {
                 onParallel.counter += 1;
                 local.contentTouch({
                     message: options.message,
                     modeErrorIgnore: true,
-                    url: url
+                    url: data.element
                 }, onParallel);
-            });
-            onParallel();
+            }, onError);
         };
         break;
     }
@@ -9748,9 +9796,9 @@ local.assetsDict['/assets.index.template.html'].replace((/\n/g), '\\n\\\n') +
                 local.assetsDict[\'/assets.index.template.html\'],\n\
                 {\n\
                     env: local.objectSetDefault(local.env, {\n\
-                        npm_package_description: \'example module\',\n\
-                        npm_package_name: \'example\',\n\
-                        npm_package_nameAlias: \'example\',\n\
+                        npm_package_description: \'the greatest app in the world!\',\n\
+                        npm_package_name: \'my-app\',\n\
+                        npm_package_nameAlias: \'my_app\',\n\
                         npm_package_version: \'0.0.1\'\n\
                     })\n\
                 }\n\
@@ -9762,11 +9810,11 @@ local.assetsDict['/assets.index.template.html'].replace((/\n/g), '\\n\\\n') +
                     String(match0);\n\
                     switch (match1) {\n\
                     case \'npm_package_description\':\n\
-                        return \'example module\';\n\
+                        return \'the greatest app in the world!\';\n\
                     case \'npm_package_name\':\n\
-                        return \'example\';\n\
+                        return \'my-app\';\n\
                     case \'npm_package_nameAlias\':\n\
-                        return \'example\';\n\
+                        return \'my_app\';\n\
                     case \'npm_package_version\':\n\
                         return \'0.0.1\';\n\
                     }\n\
@@ -9782,7 +9830,7 @@ local.assetsDict['/assets.index.template.html'].replace((/\n/g), '\\n\\\n') +
         local.assetsDict[\'/assets.jslint.rollup.js\'] =\n\
             local.assetsDict[\'/assets.jslint.rollup.js\'] ||\n\
             local.fs.readFileSync(\n\
-                // npmdoc-hack\n\
+                // buildCustomOrg-hack\n\
                 local.jslint.__dirname +\n\
                     \'/lib.jslint.js\',\n\
                 \'utf8\'\n\
@@ -9873,9 +9921,112 @@ local.assetsDict['/assets.lib.template.js'] = '\
 
 
 
+local.assetsDict['/assets.readmeCustomOrgNpmdocHeader.template.md'] = '\
+# api documentation for \
+{{#if env.npm_package_homepage}} \
+[{{env.npm_package_name}} (v{{env.npm_package_version}})]({{env.npm_package_homepage}}) \
+{{#unless env.npm_package_homepage}} \
+{{env.npm_package_name}} (v{{env.npm_package_version}}) \
+{{/if env.npm_package_homepage}} \
+[![npm package](https://img.shields.io/npm/v/npmdoc-{{env.npm_package_name}}.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-{{env.npm_package_name}}) \
+[![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-{{env.npm_package_name}}.svg)](https://travis-ci.org/npmdoc/node-npmdoc-{{env.npm_package_name}}) \
+\n\
+#### {{env.npm_package_description}} \
+\n\
+\n\
+[![NPM](https://nodei.co/npm/{{env.npm_package_name}}.png?downloads=true)](https://www.npmjs.com/package/{{env.npm_package_name}}) \
+\n\
+\n\
+[![apidoc](https://npmdoc.github.io/node-npmdoc-{{env.npm_package_name}}/build/screenCapture.buildApidoc.browser.%252Fhome%252Ftravis%252Fbuild%252Fnpmdoc%252Fnode-npmdoc-{{env.npm_package_name}}%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-{{env.npm_package_name}}/build/apidoc.html) \
+\n\
+\n\
+![npmPackageListing](https://npmdoc.github.io/node-npmdoc-{{env.npm_package_name}}/build/screenCapture.npmPackageListing.svg) \
+\n\
+\n\
+![npmPackageDependencyTree](https://npmdoc.github.io/node-npmdoc-{{env.npm_package_name}}/build/screenCapture.npmPackageDependencyTree.svg) \
+\n\
+\n\
+\n\
+\n\
+# package.json \
+\n\
+\n\
+```json \
+\n\
+\n\
+{{packageJson jsonStringify4 markdownCodeSafe}} \
+\n\
+``` \
+\n\
+';
+
+
+
+local.assetsDict['/assets.readmeCustomOrgNpmtest.template.md'] = '\
+# test coverage for \
+{{#if env.npm_package_homepage}} \
+[{{env.npm_package_name}} (v{{env.npm_package_version}})]({{env.npm_package_homepage}}) \
+{{#unless env.npm_package_homepage}} \
+{{env.npm_package_name}} (v{{env.npm_package_version}}) \
+{{/if env.npm_package_homepage}} \
+[![npm package](https://img.shields.io/npm/v/npmtest-{{env.npm_package_name}}.svg?style=flat-square)](https://www.npmjs.org/package/npmtest-{{env.npm_package_name}}) \
+[![travis-ci.org build-status](https://api.travis-ci.org/npmtest/node-npmtest-{{env.npm_package_name}}.svg)](https://travis-ci.org/npmtest/node-npmtest-{{env.npm_package_name}}) \
+\n\
+#### {{env.npm_package_description}} \
+\n\
+\n\
+[![NPM](https://nodei.co/npm/{{env.npm_package_name}}.png?downloads=true)](https://www.npmjs.com/package/{{env.npm_package_name}}) \
+\n\
+\n\
+| git-branch : | [alpha](https://github.com/npmtest/node-npmtest-{{env.npm_package_name}}/tree/alpha)|\n\
+|--:|:--| \
+\n\
+| coverage : | [![istanbul-coverage](https://npmtest.github.io/node-npmtest-{{env.npm_package_name}}/build/coverage.badge.svg)](https://npmtest.github.io/node-npmtest-{{env.npm_package_name}}/build/coverage.html/index.html)| \
+\n\
+| test-report : | [![test-report](https://npmtest.github.io/node-npmtest-{{env.npm_package_name}}/build/test-report.badge.svg)](https://npmtest.github.io/node-npmtest-{{env.npm_package_name}}/build/test-report.html)| \
+\n\
+| build-artifacts : | [![build-artifacts](https://npmtest.github.io/node-npmtest-{{env.npm_package_name}}/glyphicons_144_folder_open.png)](https://github.com/npmtest/node-npmtest-{{env.npm_package_name}}/tree/gh-pages/build)| \
+\n\
+\n\
+[![istanbul-coverage](https://npmtest.github.io/node-npmtest-{{env.npm_package_name}}/build/screenCapture.buildCustomOrg.browser.coverage.html.png)](https://npmtest.github.io/node-npmtest-{{env.npm_package_name}}/build/coverage.html/index.html) \
+\n\
+\n\
+[![test-report](https://npmtest.github.io/node-npmtest-{{env.npm_package_name}}/build/screenCapture.buildCustomOrg.browser.%252Fhome%252Ftravis%252Fbuild%252Fnpmtest%252Fnode-npmtest-{{env.npm_package_name}}%252Ftmp%252Fbuild%252Ftest-report.html.png)](https://npmtest.github.io/node-npmtest-{{env.npm_package_name}}/build/test-report.html) \
+\n\
+\n\
+[![apidoc](https://npmdoc.github.io/node-npmdoc-{{env.npm_package_name}}/build/screenCapture.buildApidoc.browser.%252Fhome%252Ftravis%252Fbuild%252Fnpmdoc%252Fnode-npmdoc-{{env.npm_package_name}}%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-{{env.npm_package_name}}/build/apidoc.html) \
+\n\
+\n\
+![npmPackageListing](https://npmtest.github.io/node-npmtest-{{env.npm_package_name}}/build/screenCapture.npmPackageListing.svg) \
+\n\
+\n\
+![npmPackageDependencyTree](https://npmtest.github.io/node-npmtest-{{env.npm_package_name}}/build/screenCapture.npmPackageDependencyTree.svg) \
+\n\
+\n\
+\n\
+\n\
+# package.json \
+\n\
+\n\
+```json \
+\n\
+\n\
+{{packageJson jsonStringify4 markdownCodeSafe}} \
+\n\
+``` \
+\n\
+\n\
+\n\
+\n\
+# misc\n\
+- this document was created with [utility2](https://github.com/kaizhu256/node-utility2)\n\
+';
+
+
+
 local.assetsDict['/assets.readme.template.md'] = '\
 # jslint-lite\n\
-example module\n\
+the greatest app in the world!\n\
 \n\
 [![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-jslint-lite.svg)](https://travis-ci.org/kaizhu256/node-jslint-lite) [![istanbul-coverage](https://kaizhu256.github.io/node-jslint-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-jslint-lite/build/coverage.html/index.html)\n\
 \n\
@@ -9895,7 +10046,7 @@ example module\n\
 # live demo\n\
 - [https://kaizhu256.github.io/node-jslint-lite/build..beta..travis-ci.org/app/index.html](https://kaizhu256.github.io/node-jslint-lite/build..beta..travis-ci.org/app/index.html)\n\
 \n\
-[![github.com test-server](https://kaizhu256.github.io/node-jslint-lite/build/screenCapture.deployGithub.browser._2Fnode-jslint-lite_2Fbuild_2Fapp_2Findex.html.png)](https://kaizhu256.github.io/node-jslint-lite/build..beta..travis-ci.org/app/index.html)\n\
+[![github.com test-server](https://kaizhu256.github.io/node-jslint-lite/build/screenCapture.deployGithub.browser.%252Fnode-jslint-lite%252Fbuild%252Fapp%252Findex.html.png)](https://kaizhu256.github.io/node-jslint-lite/build..beta..travis-ci.org/app/index.html)\n\
 \n\
 \n\
 \n\
@@ -9903,12 +10054,12 @@ example module\n\
 #### apidoc\n\
 - [https://kaizhu256.github.io/node-jslint-lite/build..beta..travis-ci.org/apidoc.html](https://kaizhu256.github.io/node-jslint-lite/build..beta..travis-ci.org/apidoc.html)\n\
 \n\
-[![apidoc](https://kaizhu256.github.io/node-jslint-lite/build/screenCapture.buildApidoc.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-jslint-lite_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://kaizhu256.github.io/node-jslint-lite/build..beta..travis-ci.org/apidoc.html)\n\
+[![apidoc](https://kaizhu256.github.io/node-jslint-lite/build/screenCapture.buildApidoc.browser.%252Fhome%252Ftravis%252Fbuild%252Fkaizhu256%252Fnode-jslint-lite%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-jslint-lite/build..beta..travis-ci.org/apidoc.html)\n\
 \n\
 #### todo\n\
 - none\n\
 \n\
-#### change since xxxxxxxx\n\
+#### changes for v0.0.1\n\
 - none\n\
 \n\
 #### this package requires\n\
@@ -9943,14 +10094,14 @@ example module\n\
 \n\
 \n\
 # quickstart web example\n\
-![screenCapture](https://kaizhu256.github.io/node-jslint-lite/build/screenCapture.testExampleJs.browser..png)\n\
+![screenCapture](https://kaizhu256.github.io/node-jslint-lite/build/screenCapture.testExampleJs.browser.%252F.png)\n\
 \n\
 #### to run this example, follow the instruction in the script below\n\
 - [example.js](https://kaizhu256.github.io/node-jslint-lite/build..beta..travis-ci.org/example.js)\n\
 ```javascript\n' + local.assetsDict['/assets.example.template.js'] + '```\n\
 \n\
 #### output from browser\n\
-![screenCapture](https://kaizhu256.github.io/node-jslint-lite/build/screenCapture.testExampleJs.browser..png)\n\
+![screenCapture](https://kaizhu256.github.io/node-jslint-lite/build/screenCapture.testExampleJs.browser.%252F.png)\n\
 \n\
 #### output from shell\n\
 ![screenCapture](https://kaizhu256.github.io/node-jslint-lite/build/screenCapture.testExampleJs.svg)\n\
@@ -9961,7 +10112,7 @@ example module\n\
 ```json\n\
 {\n\
     "author": "kai zhu <kaizhu256@gmail.com>",\n\
-    "description": "example module",\n\
+    "description": "the greatest app in the world!",\n\
     "devDependencies": {\n\
         "electron-lite": "kaizhu256/node-electron-lite#alpha",\n\
         "utility2": "kaizhu256/node-utility2#alpha"\n\
@@ -10010,7 +10161,7 @@ example module\n\
 \n\
 shBuildCiPost() {(set -e\n\
     shDeployGithub\n\
-    shDeployHeroku\n\
+    # shDeployHeroku\n\
     shReadmeBuildLinkVerify\n\
 )}\n\
 \n\
@@ -10143,10 +10294,6 @@ local.assetsDict['/assets.test.template.js'] = '\
          * this function will test buildApidoc\'s default handling-behavior-behavior\n\
          */\n\
             options = { modulePathList: module.paths };\n\
-            if (local.env.npm_package_buildNpmdoc) {\n\
-                local.buildNpmdoc(options, onError);\n\
-                return;\n\
-            }\n\
             local.buildApidoc(options, onError);\n\
         };\n\
 \n\
@@ -10182,10 +10329,6 @@ local.assetsDict['/assets.test.template.js'] = '\
         /*\n\
          * this function will test buildReadme\'s default handling-behavior-behavior\n\
          */\n\
-            if (local.env.npm_package_buildNpmdoc) {\n\
-                onError();\n\
-                return;\n\
-            }\n\
             options = {};\n\
             local.buildReadme(options, onError);\n\
         };\n\
@@ -10321,7 +10464,10 @@ local.assetsDict['/assets.testReport.template.html'] = '\
 <h4>\n\
     {{testPlatformNumber}}. {{name htmlSafe}}<br>\n\
     {{#if screenCaptureImg}}\n\
-    <a href="{{screenCaptureImg}}"><img src="{{screenCaptureImg}}"></a><br>\n\
+    <a href="{{screenCaptureImg encodeURIComponent}}">\n\
+        <img src="{{screenCaptureImg encodeURIComponent}}">\n\
+    </a>\n\
+    <br>\n\
     {{/if screenCaptureImg}}\n\
     <span>time-elapsed</span>- {{timeElapsed}} ms<br>\n\
     <span>tests failed</span>- {{testsFailed}}<br>\n\
@@ -11420,8 +11566,13 @@ local.assetsDict['/favicon.ico'] = '';
                     if (!(/^\w+:\/\//).test(options.url)) {
                         options.url = local.path.resolve(process.cwd(), options.url);
                     }
+                    options.urlParsed = local.urlParse(options.url);
+                    options.testName = options.urlParsed.pathname;
+                    if (local.env.npm_config_modeBrowserTestHostInclude) {
+                        options.testName = options.urlParsed.host + options.testName;
+                    }
                     options.testName = local.env.MODE_BUILD + '.browser.' +
-                        encodeURIComponent(local.urlParse(options.url).pathname
+                        encodeURIComponent(options.testName
                             .replace(
                                 '/build..' + local.env.CI_BRANCH + '..' + local.env.CI_HOST,
                                 '/build'
@@ -11430,14 +11581,12 @@ local.assetsDict['/favicon.ico'] = '';
                         fileCoverage: local.env.npm_config_dir_tmp +
                             '/coverage.' + options.testName + '.json',
                         fileScreenCapture: (local.env.npm_config_dir_build +
-                            '/screenCapture.' + options.testName + '.png')
-                            .replace((/%/g), '_')
-                            .replace((/_2F\.png$/), '.png'),
+                            '/screenCapture.' + options.testName + '.png'),
                         fileTestReport: local.env.npm_config_dir_tmp +
                             '/test-report.' + options.testName + '.json',
                         modeBrowserTest: 'test',
                         timeExit: Date.now() + options.timeoutDefault,
-                        timeoutScreenCapture: Number(options.timeoutScreenCapture || 10000)
+                        timeoutScreenCapture: Number(options.timeoutScreenCapture || 15000)
                     }, 1);
                     // init timerTimeout
                     timerTimeout = local.onTimeout(
@@ -11812,6 +11961,10 @@ return Utf8ArrayToStr(bff);
         /*
          * this function will build the apidoc
          */
+            if (local.env.npm_package_buildCustomOrg && !options.modeForce) {
+                local.buildApidocCustomOrg(local.objectSetDefault({}, options), onError);
+                return;
+            }
             // optimization - do not run if $npm_config_mode_coverage = all
             if (local.env.npm_config_mode_coverage === 'all') {
                 onError();
@@ -11830,6 +11983,86 @@ return Utf8ArrayToStr(bff);
                 url: local.env.npm_config_dir_build + '/apidoc.html'
             }, onError);
         };
+
+        local.buildApidocCustomOrg = function (options, onError) {
+        /*
+         * this function will build the customOrg
+         */
+            var done, onError2, onParallel;
+            // ensure exit after 5 minutes
+            setTimeout(process.exit, 5 * 60 * 1000);
+            onError2 = function (error) {
+                local.onErrorDefault(error);
+                if (done) {
+                    return;
+                }
+                done = true;
+                // try to recover from error
+                setTimeout(onError, error && local.timeoutDefault);
+            };
+            // try to salvage uncaughtException
+            process.on('uncaughtException', onError2);
+            onParallel = local.utility2.onParallel(onError2);
+            onParallel.counter += 1;
+            // build package.json
+            options.packageJson = JSON.parse(local.fs.readFileSync('package.json', 'utf8'));
+            onParallel.counter += 1;
+            local.buildReadme({
+                dataFrom: '\n# package.json\n```json\n' + JSON.stringify(options.packageJson) +
+                    '\n```\n',
+                modeForce: true
+            }, onParallel);
+            options.packageJson = JSON.parse(local.fs.readFileSync('package.json', 'utf8'));
+            switch (local.env.GITHUB_ORG) {
+            case 'npmdoc':
+                // update package.json
+                local.objectSetOverride(options.packageJson, local.objectLiteralize({
+                    keywords: ['documentation', local.env.npm_package_buildCustomOrg]
+                }), 2);
+                // build apidoc.html
+                onParallel.counter += 1;
+                local.buildApidoc({
+                    dir: local.env.npm_package_buildCustomOrg,
+                    modeForce: true,
+                    modulePathList: options.modulePathList
+                }, onParallel);
+                // build README.md
+                options.readme = local.apidocCreate({
+                    dir: local.env.npm_package_buildCustomOrg,
+                    header: local.assetsDict['/assets.readmeCustomOrgNpmdocHeader.template.md'],
+                    modulePathList: options.modulePathList,
+                    template: local.apidoc.templateApidocMd
+                });
+                local.fs.writeFileSync('README.md', options.readme);
+                break;
+            case 'npmtest':
+                // update package.json
+                local.objectSetOverride(options.packageJson, local.objectLiteralize({
+                    keywords: ['coverage', 'test', local.env.npm_package_buildCustomOrg]
+                }), 2);
+                // build README.md
+                options.readme = local.apidocCreate({
+                    dir: local.env.npm_package_buildCustomOrg,
+                    modeRenderFast: true,
+                    modulePathList: options.modulePathList,
+                    template: local.assetsDict['/assets.readmeCustomOrgNpmtest.template.md']
+                });
+                local.fs.writeFileSync('README.md', options.readme);
+                break;
+            }
+            // re-build package.json
+            options.packageJson.description = (/\w.*/).exec(options.readme)[0]
+                .replace((/ {2,}/g), ' ')
+                .trim();
+            local.fs.writeFileSync(
+                'package.json',
+                local.jsonStringifyOrdered(options.packageJson, null, 4) + '\n'
+            );
+            onParallel();
+        };
+
+        // legacy-hack
+        local.buildNpmdoc = local.buildApidocCustomOrg;
 
         local.buildApp = function (options, onError) {
         /*
@@ -11950,116 +12183,14 @@ return Utf8ArrayToStr(bff);
             onError();
         };
 
-        local.buildNpmdoc = function (options, onError) {
-        /*
-         * this function will build the npmdoc
-         */
-            var done, onError2, onParallel, packageJson;
-            // ensure exit after 5 minutes
-            setTimeout(process.exit, 5 * 60 * 1000);
-            onError2 = function (error) {
-                local.onErrorDefault(error);
-                if (done) {
-                    return;
-                }
-                done = true;
-                // try to recover from error
-                setTimeout(onError, error && local.timeoutDefault);
-            };
-            // try to salvage uncaughtException
-            process.on('uncaughtException', onError2);
-            onParallel = local.utility2.onParallel(onError2);
-            onParallel.counter += 1;
-            // build package.json
-            packageJson = JSON.parse(local.fs.readFileSync('package.json', 'utf8'));
-            local.objectSetDefault(packageJson, local.objectLiteralize({
-                devDependencies: {
-                    '$[]': [local.env.npm_package_buildNpmdoc, '*']
-                },
-                repository: {
-                    type: 'git',
-                    url: 'https://github.com/npmdoc/node-npmdoc-' +
-                        local.env.npm_package_buildNpmdoc + '.git'
-                }
-            }), 2);
-            local.objectSetOverride(packageJson, local.objectLiteralize({
-                keywords: ['documentation', local.env.npm_package_buildNpmdoc]
-            }), 2);
-            onParallel.counter += 1;
-            local.buildReadme({
-                dataFrom: '\n# package.json\n```json\n' +
-                    JSON.stringify(packageJson) + '\n```\n'
-            }, onParallel);
-            packageJson = JSON.parse(local.fs.readFileSync('package.json', 'utf8'));
-            // build apidoc.html
-            onParallel.counter += 1;
-            local.buildApidoc({
-                dir: local.env.npm_package_buildNpmdoc,
-                modulePathList: options.modulePathList
-            }, onParallel);
-            // build README.md
-            options = { modulePathList: options.modulePathList };
-            options.readme = local.apidocCreate({
-                dir: local.env.npm_package_buildNpmdoc,
-/* jslint-ignore-begin */
-header: '\
-# api documentation for \
-{{#if env.npm_package_homepage}} \
-[{{env.npm_package_name}} (v{{env.npm_package_version}})]({{env.npm_package_homepage}}) \
-{{#unless env.npm_package_homepage}} \
-{{env.npm_package_name}} (v{{env.npm_package_version}}) \
-{{/if env.npm_package_homepage}} \
-[![npm package](https://img.shields.io/npm/v/npmdoc-{{env.npm_package_name}}.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-{{env.npm_package_name}}) \
-[![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-{{env.npm_package_name}}.svg)](https://travis-ci.org/npmdoc/node-npmdoc-{{env.npm_package_name}}) \
-\n\
-#### {{env.npm_package_description}} \
-\n\
-\n\
-[![NPM](https://nodei.co/npm/{{env.npm_package_name}}.png?downloads=true)](https://www.npmjs.com/package/{{env.npm_package_name}}) \
-\n\
-\n\
-[![apidoc](https://npmdoc.github.io/node-npmdoc-{{env.npm_package_name}}/build/screenCapture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-{{env.npm_package_name}}_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-{{env.npm_package_name}}/build..beta..travis-ci.org/apidoc.html) \
-\n\
-\n\
-![npmPackageListing](https://npmdoc.github.io/node-npmdoc-{{env.npm_package_name}}/build/screenCapture.npmPackageListing.svg) \
-\n\
-\n\
-![npmPackageDependencyTree](https://npmdoc.github.io/node-npmdoc-{{env.npm_package_name}}/build/screenCapture.npmPackageDependencyTree.svg) \
-\n\
-\n\
-\n\
-\n\
-# package.json \
-\n\
-\n\
-```json \
-\n\
-\n\
-{{packageJson jsonStringify4 markdownCodeSafe}} \
-\n\
-``` \
-\n\
-',
-/* jslint-ignore-end */
-                modulePathList: options.modulePathList,
-                template: local.apidoc.templateApidocMd
-            });
-            local.fs.writeFileSync('README.md', options.readme);
-            // re-build package.json
-            packageJson.description = (/\w.*/).exec(options.readme)[0]
-                .replace((/ {2,}/g), ' ')
-                .trim();
-            local.fs.writeFileSync(
-                'package.json',
-                local.jsonStringifyOrdered(packageJson, null, 4) + '\n'
-            );
-            onParallel();
-        };
-
         local.buildReadme = function (options, onError) {
         /*
          * this function will build the readme in jslint-lite style
          */
+            if (local.env.npm_package_buildCustomOrg && !options.modeForce) {
+                onError();
+                return;
+            }
             local.objectSetDefault(options, {
                 customize: local.nop,
                 dataFrom: local.tryCatchReadFile('README.md', 'utf8')
@@ -12265,7 +12396,7 @@ header: '\
          * this function will update dbTableTravisRepo with active, public repos
          */
             var dbRowList, self;
-            options = local.objectSetDefault(options, { queryLimit: 500, rateLimit: 10 });
+            options = local.objectSetDefault(options, { queryLimit: 100 });
             local.onNext(options, function (error, data) {
                 switch (options.modeNext) {
                 case 1:
@@ -12307,14 +12438,16 @@ header: '\
                         dbRow = dbRow.element;
                         onParallel.counter += 1;
                         local.ajax({
-                            headers: {
-                                Authorization: 'token ' + local.env.TRAVIS_ACCESS_TOKEN
-                            },
                             url: 'https://api.travis-ci.org/repos/' + dbRow.githubRepo
                         }, function (error, data) {
                             // validate no error occurred
                             local.assert(!error, error);
-                            local.objectSetOverride(dbRow, JSON.parse(data.responseText));
+                            data = JSON.parse(data.responseText);
+                            Object.keys(data).forEach(function (key) {
+                                if (data[key] !== null) {
+                                    dbRow[key] = data[key];
+                                }
+                            });
                             // ignore extraneous data to save space
                             dbRow.description = null;
                             dbRow.last_build_duration = null;
@@ -12341,7 +12474,8 @@ header: '\
                     self.save(options.onNext);
                     break;
                 default:
-                    local.setTimeoutOnError(onError, error, self);
+                    local.onErrorDefault(error);
+                    local.setTimeoutOnError(onError, null, self);
                 }
             });
             options.modeNext = 0;
@@ -13102,6 +13236,7 @@ header: '\
             }
             // search modulePathList
             [
+                ['node_modules'],
                 modulePathList,
                 require('module').globalPaths
             ].some(function (modulePathList) {
@@ -13437,8 +13572,8 @@ header: '\
             ii = -1;
             onParallel.ii = -1;
             onParallel.remaining = options.list.length;
-            options.rateLimit = Number(options.rateLimit) || 8;
-            options.rateLimit = Math.max(options.rateLimit, 2);
+            options.rateLimit = Number(options.rateLimit) || 4;
+            options.rateLimit = Math.max(options.rateLimit, 3);
             options.retryLimit = Number(options.retryLimit) || 2;
             onEach2();
             onParallel();
@@ -13782,7 +13917,7 @@ vendor\\)\\(\\b\\|[_s]\\)\
                 {}
             );
             // coverage-hack
-            local.nop(local.env.npm_package_readmeParse && (function () {
+            local.nop(!local.env.npm_package_buildCustomOrg && (function () {
                 local.fs.readFileSync('README.md', 'utf8').replace(
                     (/```\w*?(\n[\W\s]*?example\.js[\n\"][\S\s]+?)\n```/),
                     function (match0, match1, ii, text) {
@@ -14349,8 +14484,8 @@ instruction\n\
                 options.githubRepo.join('/')
             );
             template = template.replace(
-                (/kaizhu256_2Fnode-jslint-lite/g),
-                options.githubRepo.join('_2F')
+                (/kaizhu256%252Fnode-jslint-lite/g),
+                options.githubRepo.join('%252F')
             );
             template = template.replace(
                 (/node-jslint-lite/g),
@@ -14385,7 +14520,9 @@ instruction\n\
             onError2 = function (error) {
                 // restore mock[0] from mock[2]
                 mockList.reverse().forEach(function (mock) {
-                    local.objectSetOverride(mock[0], mock[2]);
+                    Object.keys(mock[2]).forEach(function (key) {
+                        mock[0][key] = mock[2][key];
+                    });
                 });
                 onError(error);
             };
@@ -14396,10 +14533,17 @@ instruction\n\
                     mock[2] = {};
                     // backup mock[0] into mock[2]
                     Object.keys(mock[1]).forEach(function (key) {
+                        if (typeof process === 'object' &&
+                                process.env === mock[0] &&
+                                mock[0][key] === undefined) {
+                            mock[0][key] = '';
+                        }
                         mock[2][key] = mock[0][key];
                     });
                     // override mock[0] with mock[1]
-                    local.objectSetOverride(mock[0], mock[1]);
+                    Object.keys(mock[1]).forEach(function (key) {
+                        mock[0][key] = mock[1][key];
+                    });
                 });
                 // run onTestCase
                 onTestCase(onError2);
@@ -14696,6 +14840,12 @@ instruction\n\
                 // mock proces.exit
                 exit = process.exit;
                 process.exit = local.nop;
+                /* istanbul ignore next */
+                if (local.env.npm_package_buildCustomOrg &&
+                        local.fs.existsSync(local.env.npm_package_buildCustomOrg)) {
+                    local.exportsCustomOrg =
+                        require(process.cwd() + '/' + local.env.npm_package_buildCustomOrg);
+                }
                 break;
             }
             // init modeTestCase
@@ -15077,9 +15227,9 @@ instruction\n\
             npm_package_nameAlias: (local.env.npm_package_name || '').replace((/\W/g), '_')
         });
         local.objectSetDefault(local.env, {
-            npm_package_description: 'example module',
-            npm_package_name: 'example',
-            npm_package_nameAlias: 'example',
+            npm_package_description: 'the greatest app in the world!',
+            npm_package_name: 'my-app',
+            npm_package_nameAlias: 'my_app',
             npm_package_version: '0.0.1'
         });
         local.errorDefault = new Error('default error');
@@ -15089,23 +15239,6 @@ instruction\n\
         local.istanbulInstrumentInPackage = local.istanbul.instrumentInPackage || local.echo;
         local.istanbulInstrumentSync = local.istanbul.instrumentSync || local.echo;
         local.jslintAndPrint = local.jslint.jslintAndPrint || local.echo;
-        local.packageJsonNpmdocDefault = {
-            "buildNpmdoc": "mysql",
-            "devDependencies": {
-                "electron-lite": "kaizhu256/node-electron-lite#alpha",
-                "utility2": "kaizhu256/node-utility2#alpha"
-            },
-            "homepage": "https://github.com/npmdoc/node-npmdoc-mysql",
-            "name": "npmdoc-mysql",
-            "nameOriginal": "npmdoc-mysql",
-            "repository": {
-                "type": "git",
-                "url": "https://github.com/npmdoc/node-npmdoc-mysql.git"
-            },
-            "scripts": {
-                "build-ci": "utility2 shReadmeTest build_ci.sh"
-            }
-        };
         local.regexpEmailValidate = new RegExp(
             '^[a-zA-Z0-9.!#$%&\'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}' +
                 '[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$'
