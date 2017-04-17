@@ -1,24 +1,24 @@
 <svg height="334" width="720" xmlns="http://www.w3.org/2000/svg">
 <rect height="334" fill="#555" width="720"></rect>
 <text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
-<tspan x="10" y="26">  0.  2017-04-17 15:20:25 +0000    28742 bytes  .</tspan>
-<tspan x="10" y="42">  1.  2017-04-17 15:20:25 +0000     1173 bytes  LICENSE</tspan>
-<tspan x="10" y="58">  2.  2017-04-17 15:20:25 +0000     3473 bytes  ReadMe.md</tspan>
-<tspan x="10" y="74">  3.  2017-04-17 15:20:25 +0000     1795 bytes  examples/normal-usage.js</tspan>
-<tspan x="10" y="90">  4.  2017-04-17 15:20:25 +0000     1929 bytes  examples/safe-string.js</tspan>
-<tspan x="10" y="106">  5.  2017-04-17 15:20:25 +0000     4825 bytes  lib/colors.js</tspan>
-<tspan x="10" y="122">  6.  2017-04-17 15:20:25 +0000     1664 bytes  lib/custom/trap.js</tspan>
-<tspan x="10" y="138">  7.  2017-04-17 15:20:25 +0000     2845 bytes  lib/custom/zalgo.js</tspan>
-<tspan x="10" y="154">  8.  2017-04-17 15:20:25 +0000     3048 bytes  lib/extendStringPrototype.js</tspan>
-<tspan x="10" y="170">  9.  2017-04-17 15:20:25 +0000      362 bytes  lib/index.js</tspan>
-<tspan x="10" y="186"> 10.  2017-04-17 15:20:25 +0000      307 bytes  lib/maps/america.js</tspan>
-<tspan x="10" y="202"> 11.  2017-04-17 15:20:25 +0000      344 bytes  lib/maps/rainbow.js</tspan>
-<tspan x="10" y="218"> 12.  2017-04-17 15:20:25 +0000      352 bytes  lib/maps/random.js</tspan>
-<tspan x="10" y="234"> 13.  2017-04-17 15:20:25 +0000      147 bytes  lib/maps/zebra.js</tspan>
-<tspan x="10" y="250"> 14.  2017-04-17 15:20:25 +0000     2099 bytes  lib/styles.js</tspan>
-<tspan x="10" y="266"> 15.  2017-04-17 15:20:25 +0000     1819 bytes  lib/system/supports-colors.js</tspan>
-<tspan x="10" y="282"> 16.  2017-04-17 15:20:25 +0000     2122 bytes  package.json</tspan>
-<tspan x="10" y="298"> 17.  2017-04-17 15:20:25 +0000      241 bytes  safe.js</tspan>
-<tspan x="10" y="314"> 18.  2017-04-17 15:20:25 +0000      197 bytes  themes/generic-logging.js</tspan>
+<tspan x="10" y="26">  0.  2017-04-17 15:21:20 +0000    28742 bytes  .</tspan>
+<tspan x="10" y="42">  1.  2017-04-17 15:21:20 +0000     1173 bytes  LICENSE</tspan>
+<tspan x="10" y="58">  2.  2017-04-17 15:21:20 +0000     3473 bytes  ReadMe.md</tspan>
+<tspan x="10" y="74">  3.  2017-04-17 15:21:20 +0000     1795 bytes  examples/normal-usage.js</tspan>
+<tspan x="10" y="90">  4.  2017-04-17 15:21:20 +0000     1929 bytes  examples/safe-string.js</tspan>
+<tspan x="10" y="106">  5.  2017-04-17 15:21:20 +0000     4825 bytes  lib/colors.js</tspan>
+<tspan x="10" y="122">  6.  2017-04-17 15:21:20 +0000     1664 bytes  lib/custom/trap.js</tspan>
+<tspan x="10" y="138">  7.  2017-04-17 15:21:20 +0000     2845 bytes  lib/custom/zalgo.js</tspan>
+<tspan x="10" y="154">  8.  2017-04-17 15:21:20 +0000     3048 bytes  lib/extendStringPrototype.js</tspan>
+<tspan x="10" y="170">  9.  2017-04-17 15:21:20 +0000      362 bytes  lib/index.js</tspan>
+<tspan x="10" y="186"> 10.  2017-04-17 15:21:20 +0000      307 bytes  lib/maps/america.js</tspan>
+<tspan x="10" y="202"> 11.  2017-04-17 15:21:20 +0000      344 bytes  lib/maps/rainbow.js</tspan>
+<tspan x="10" y="218"> 12.  2017-04-17 15:21:20 +0000      352 bytes  lib/maps/random.js</tspan>
+<tspan x="10" y="234"> 13.  2017-04-17 15:21:20 +0000      147 bytes  lib/maps/zebra.js</tspan>
+<tspan x="10" y="250"> 14.  2017-04-17 15:21:20 +0000     2099 bytes  lib/styles.js</tspan>
+<tspan x="10" y="266"> 15.  2017-04-17 15:21:20 +0000     1819 bytes  lib/system/supports-colors.js</tspan>
+<tspan x="10" y="282"> 16.  2017-04-17 15:21:20 +0000     2122 bytes  package.json</tspan>
+<tspan x="10" y="298"> 17.  2017-04-17 15:21:20 +0000      241 bytes  safe.js</tspan>
+<tspan x="10" y="314"> 18.  2017-04-17 15:21:20 +0000      197 bytes  themes/generic-logging.js</tspan>
 </text>
 </svg>
