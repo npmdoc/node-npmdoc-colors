@@ -1,6 +1,6 @@
 # npmdoc-colors
 
-#### api documentation for  [colors (v1.1.2)](https://github.com/Marak/colors.js)  [![npm package](https://img.shields.io/npm/v/npmdoc-colors.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-colors) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-colors.svg)](https://travis-ci.org/npmdoc/node-npmdoc-colors)
+#### basic api documentation for  [colors (v1.1.2)](https://github.com/Marak/colors.js)  [![npm package](https://img.shields.io/npm/v/npmdoc-colors.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-colors) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-colors.svg)](https://travis-ci.org/npmdoc/node-npmdoc-colors)
 
 #### get colors in your node.js console
 
@@ -68,7 +68,8 @@
     "scripts": {
         "test": "node tests/basic-test.js && node tests/safe-test.js"
     },
-    "version": "1.1.2"
+    "version": "1.1.2",
+    "bin": {}
 }
 ```
 
