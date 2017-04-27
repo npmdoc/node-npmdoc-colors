@@ -373,7 +373,23 @@
     <li>description and source-code<pre class="apidocCodePre">america = function (str) {
   return sequencer(colors.maps[map], str);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+console.log(colors.zebra(&#x22;Zebras are so fun!&#x22;));
+
+console.log(&#x22;This is &#x22; + colors.strikethrough(&#x22;not&#x22;) + &#x22; fun.&#x22;);
+
+
+console.log(colors.black.bgWhite(&#x27;Background color attack!&#x27;));
+console.log(colors.random(&#x27;Use random styles on everything!&#x27;))
+console.log(colors.<span class="apidocCodeKeywordSpan">america</span>(&#x27;America, Heck Yeah!&#x27;));
+
+console.log(&#x27;Setting themes is useful&#x27;)
+
+//
+// Custom themes
+//
+//console.log(&#x27;Generic logging theme as JSON&#x27;.green.bold.underline);
+...</pre></li>
     </ul>
 
 
@@ -420,7 +436,23 @@ If you are writing good code you will never have an issue with the first approac
     <li>description and source-code<pre class="apidocCodePre">random = function (str) {
   return sequencer(colors.maps[map], str);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+console.log(colors.zebra(&#x22;Zebras are so fun!&#x22;));
+
+console.log(&#x22;This is &#x22; + colors.strikethrough(&#x22;not&#x22;) + &#x22; fun.&#x22;);
+
+
+console.log(colors.black.bgWhite(&#x27;Background color attack!&#x27;));
+console.log(colors.<span class="apidocCodeKeywordSpan">random</span>(&#x27;Use random styles on everything!&#x27;))
+console.log(colors.america(&#x27;America, Heck Yeah!&#x27;));
+
+console.log(&#x27;Setting themes is useful&#x27;)
+
+//
+// Custom themes
+//
+...</pre></li>
     </ul>
 
 
@@ -477,7 +509,23 @@ help: &#x27;cyan&#x27;,
     <li>description and source-code<pre class="apidocCodePre">strip = function (str){
   return (&#x22;&#x22; + str).replace(/\x1B\[\d+m/g, &#x27;&#x27;);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+      var exploded = this.split(&#x22;&#x22;), i = 0;
+      exploded = exploded.map(map);
+      return exploded.join(&#x22;&#x22;);
+    }
+};
+
+addProperty(&#x27;strip&#x27;, function () {
+  return colors.<span class="apidocCodeKeywordSpan">strip</span>(this);
+});
+
+addProperty(&#x27;stripColors&#x27;, function () {
+  return colors.strip(this);
+});
+
+addProperty(&#x22;trap&#x22;, function(){
+...</pre></li>
     </ul>
 
 
@@ -511,7 +559,23 @@ help: &#x27;cyan&#x27;,
 
   return ansiStyles[style].open + str + ansiStyles[style].close;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+//
+// Iterate through all default styles and colors
+//
+var x = Object.keys(colors.styles);
+x.forEach(function (style) {
+  addProperty(style, function () {
+    return colors.<span class="apidocCodeKeywordSpan">stylize</span>(this, style);
+  });
+});
+
+function applyTheme(theme) {
+  //
+  // Remark: This is a list of methods that exist
+  // on String that you should not overwrite.
+...</pre></li>
     </ul>
 
 
@@ -699,7 +763,16 @@ If you are writing good code you will never have an issue with the first approac
   // don&#x27;t summon him
   return heComes(text, options);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+// outputs yellow text
+console.log(colors.warn(&#x22;this is a warning&#x22;));
+
+// outputs grey text
+console.log(colors.input(&#x22;this is an input&#x22;));
+
+// console.log(colors.<span class="apidocCodeKeywordSpan">zalgo</span>(&#x22;Don&#x27;t summon him&#x22;))
+...</pre></li>
     </ul>
 
 
@@ -714,7 +787,24 @@ If you are writing good code you will never have an issue with the first approac
     <li>description and source-code<pre class="apidocCodePre">zebra = function (str) {
   return sequencer(colors.maps[map], str);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+console.log(colors.rainbow(colors.trap(&#x22;DROP THE RAINBOW BASS&#x22;)));
+
+console.log(colors.bold.italic.underline.red(&#x27;Chains are also cool.&#x27;)); // styles not widely supported
+
+
+console.log(colors.green(&#x27;So &#x27;) + colors.underline(&#x27;are&#x27;) + &#x27; &#x27; + colors.inverse(&#x27;inverse&#x27
+;) + colors.yellow.bold(&#x27; styles! &#x27;)); // styles not widely supported
+
+console.log(colors.<span class="apidocCodeKeywordSpan">zebra</span>(&#x22;Zebras are so fun!&#x22;));
+
+console.log(&#x22;This is &#x22; + colors.strikethrough(&#x22;not&#x22;) + &#x22; fun.&#x22;);
+
+
+console.log(colors.black.bgWhite(&#x27;Background color attack!&#x27;));
+console.log(colors.random(&#x27;Use random styles on everything!&#x27;))
+console.log(colors.america(&#x27;America, Heck Yeah!&#x27;));
+...</pre></li>
     </ul>
 
 
@@ -747,7 +837,23 @@ If you are writing good code you will never have an issue with the first approac
     case 2: return colors.blue(letter)
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+console.log(colors.zebra(&#x22;Zebras are so fun!&#x22;));
+
+console.log(&#x22;This is &#x22; + colors.strikethrough(&#x22;not&#x22;) + &#x22; fun.&#x22;);
+
+
+console.log(colors.black.bgWhite(&#x27;Background color attack!&#x27;));
+console.log(colors.random(&#x27;Use random styles on everything!&#x27;))
+console.log(colors.<span class="apidocCodeKeywordSpan">america</span>(&#x27;America, Heck Yeah!&#x27;));
+
+console.log(&#x27;Setting themes is useful&#x27;)
+
+//
+// Custom themes
+//
+//console.log(&#x27;Generic logging theme as JSON&#x27;.green.bold.underline);
+...</pre></li>
     </ul>
 
 
@@ -798,7 +904,23 @@ If you are writing good code you will never have an issue with the first approac
     <li>description and source-code<pre class="apidocCodePre">random = function (letter, i, exploded) {
   return letter === &#x22; &#x22; ? letter : colors[available[Math.round(Math.random() * (available.length - 1))]](letter);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+console.log(colors.zebra(&#x22;Zebras are so fun!&#x22;));
+
+console.log(&#x22;This is &#x22; + colors.strikethrough(&#x22;not&#x22;) + &#x22; fun.&#x22;);
+
+
+console.log(colors.black.bgWhite(&#x27;Background color attack!&#x27;));
+console.log(colors.<span class="apidocCodeKeywordSpan">random</span>(&#x27;Use random styles on everything!&#x27;))
+console.log(colors.america(&#x27;America, Heck Yeah!&#x27;));
+
+console.log(&#x27;Setting themes is useful&#x27;)
+
+//
+// Custom themes
+//
+...</pre></li>
     </ul>
 
 
@@ -813,7 +935,24 @@ If you are writing good code you will never have an issue with the first approac
     <li>description and source-code<pre class="apidocCodePre">zebra = function (letter, i, exploded) {
   return i % 2 === 0 ? letter : colors.inverse(letter);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+console.log(colors.rainbow(colors.trap(&#x22;DROP THE RAINBOW BASS&#x22;)));
+
+console.log(colors.bold.italic.underline.red(&#x27;Chains are also cool.&#x27;)); // styles not widely supported
+
+
+console.log(colors.green(&#x27;So &#x27;) + colors.underline(&#x27;are&#x27;) + &#x27; &#x27; + colors.inverse(&#x27;inverse&#x27
+;) + colors.yellow.bold(&#x27; styles! &#x27;)); // styles not widely supported
+
+console.log(colors.<span class="apidocCodeKeywordSpan">zebra</span>(&#x22;Zebras are so fun!&#x22;));
+
+console.log(&#x22;This is &#x22; + colors.strikethrough(&#x22;not&#x22;) + &#x22; fun.&#x22;);
+
+
+console.log(colors.black.bgWhite(&#x27;Background color attack!&#x27;));
+console.log(colors.random(&#x27;Use random styles on everything!&#x27;))
+console.log(colors.america(&#x27;America, Heck Yeah!&#x27;));
+...</pre></li>
     </ul>
 
 
@@ -837,7 +976,23 @@ If you are writing good code you will never have an issue with the first approac
     <li>description and source-code<pre class="apidocCodePre">america = function (str) {
   return sequencer(colors.maps[map], str);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+console.log(colors.zebra(&#x22;Zebras are so fun!&#x22;));
+
+console.log(&#x22;This is &#x22; + colors.strikethrough(&#x22;not&#x22;) + &#x22; fun.&#x22;);
+
+
+console.log(colors.black.bgWhite(&#x27;Background color attack!&#x27;));
+console.log(colors.random(&#x27;Use random styles on everything!&#x27;))
+console.log(colors.<span class="apidocCodeKeywordSpan">america</span>(&#x27;America, Heck Yeah!&#x27;));
+
+console.log(&#x27;Setting themes is useful&#x27;)
+
+//
+// Custom themes
+//
+//console.log(&#x27;Generic logging theme as JSON&#x27;.green.bold.underline);
+...</pre></li>
     </ul>
 
 
@@ -884,7 +1039,23 @@ If you are writing good code you will never have an issue with the first approac
     <li>description and source-code<pre class="apidocCodePre">random = function (str) {
   return sequencer(colors.maps[map], str);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+console.log(colors.zebra(&#x22;Zebras are so fun!&#x22;));
+
+console.log(&#x22;This is &#x22; + colors.strikethrough(&#x22;not&#x22;) + &#x22; fun.&#x22;);
+
+
+console.log(colors.black.bgWhite(&#x27;Background color attack!&#x27;));
+console.log(colors.<span class="apidocCodeKeywordSpan">random</span>(&#x27;Use random styles on everything!&#x27;))
+console.log(colors.america(&#x27;America, Heck Yeah!&#x27;));
+
+console.log(&#x27;Setting themes is useful&#x27;)
+
+//
+// Custom themes
+//
+...</pre></li>
     </ul>
 
 
@@ -941,7 +1112,23 @@ help: &#x27;cyan&#x27;,
     <li>description and source-code<pre class="apidocCodePre">strip = function (str){
   return (&#x22;&#x22; + str).replace(/\x1B\[\d+m/g, &#x27;&#x27;);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+      var exploded = this.split(&#x22;&#x22;), i = 0;
+      exploded = exploded.map(map);
+      return exploded.join(&#x22;&#x22;);
+    }
+};
+
+addProperty(&#x27;strip&#x27;, function () {
+  return colors.<span class="apidocCodeKeywordSpan">strip</span>(this);
+});
+
+addProperty(&#x27;stripColors&#x27;, function () {
+  return colors.strip(this);
+});
+
+addProperty(&#x22;trap&#x22;, function(){
+...</pre></li>
     </ul>
 
 
@@ -975,7 +1162,23 @@ help: &#x27;cyan&#x27;,
 
   return ansiStyles[style].open + str + ansiStyles[style].close;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+//
+// Iterate through all default styles and colors
+//
+var x = Object.keys(colors.styles);
+x.forEach(function (style) {
+  addProperty(style, function () {
+    return colors.<span class="apidocCodeKeywordSpan">stylize</span>(this, style);
+  });
+});
+
+function applyTheme(theme) {
+  //
+  // Remark: This is a list of methods that exist
+  // on String that you should not overwrite.
+...</pre></li>
     </ul>
 
 
@@ -1163,7 +1366,16 @@ If you are writing good code you will never have an issue with the first approac
   // don&#x27;t summon him
   return heComes(text, options);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+// outputs yellow text
+console.log(colors.warn(&#x22;this is a warning&#x22;));
+
+// outputs grey text
+console.log(colors.input(&#x22;this is an input&#x22;));
+
+// console.log(colors.<span class="apidocCodeKeywordSpan">zalgo</span>(&#x22;Don&#x27;t summon him&#x22;))
+...</pre></li>
     </ul>
 
 
@@ -1178,7 +1390,24 @@ If you are writing good code you will never have an issue with the first approac
     <li>description and source-code<pre class="apidocCodePre">zebra = function (str) {
   return sequencer(colors.maps[map], str);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+console.log(colors.rainbow(colors.trap(&#x22;DROP THE RAINBOW BASS&#x22;)));
+
+console.log(colors.bold.italic.underline.red(&#x27;Chains are also cool.&#x27;)); // styles not widely supported
+
+
+console.log(colors.green(&#x27;So &#x27;) + colors.underline(&#x27;are&#x27;) + &#x27; &#x27; + colors.inverse(&#x27;inverse&#x27
+;) + colors.yellow.bold(&#x27; styles! &#x27;)); // styles not widely supported
+
+console.log(colors.<span class="apidocCodeKeywordSpan">zebra</span>(&#x22;Zebras are so fun!&#x22;));
+
+console.log(&#x22;This is &#x22; + colors.strikethrough(&#x22;not&#x22;) + &#x22; fun.&#x22;);
+
+
+console.log(colors.black.bgWhite(&#x27;Background color attack!&#x27;));
+console.log(colors.random(&#x27;Use random styles on everything!&#x27;))
+console.log(colors.america(&#x27;America, Heck Yeah!&#x27;));
+...</pre></li>
     </ul>
 
 
