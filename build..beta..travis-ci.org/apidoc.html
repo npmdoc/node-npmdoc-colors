@@ -1,0 +1,839 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="https://github.com/Marak/colors.js"
+
+    >colors (v1.1.2)</a>
+</h1>
+<h4>get colors in your node.js console</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.colors">module colors</a><ol>
+
+        <li>
+
+            <span class="apidocSignatureSpan">boolean <span class="apidocSignatureSpan">colors.</span>enabled</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">boolean <span class="apidocSignatureSpan">colors.</span>supportsColor</span>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.colors.america">
+            function <span class="apidocSignatureSpan">colors.</span>america
+            <span class="apidocSignatureSpan">(str)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.colors.rainbow">
+            function <span class="apidocSignatureSpan">colors.</span>rainbow
+            <span class="apidocSignatureSpan">(str)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.colors.random">
+            function <span class="apidocSignatureSpan">colors.</span>random
+            <span class="apidocSignatureSpan">(str)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.colors.setTheme">
+            function <span class="apidocSignatureSpan">colors.</span>setTheme
+            <span class="apidocSignatureSpan">(theme)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.colors.strip">
+            function <span class="apidocSignatureSpan">colors.</span>strip
+            <span class="apidocSignatureSpan">(str)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.colors.stripColors">
+            function <span class="apidocSignatureSpan">colors.</span>stripColors
+            <span class="apidocSignatureSpan">(str)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.colors.stylize">
+            function <span class="apidocSignatureSpan">colors.</span>stylize
+            <span class="apidocSignatureSpan">(str, style)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.colors.trap">
+            function <span class="apidocSignatureSpan">colors.</span>trap
+            <span class="apidocSignatureSpan">(text, options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.colors.zalgo">
+            function <span class="apidocSignatureSpan">colors.</span>zalgo
+            <span class="apidocSignatureSpan">(text, options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.colors.zebra">
+            function <span class="apidocSignatureSpan">colors.</span>zebra
+            <span class="apidocSignatureSpan">(str)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">colors.</span>maps</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">colors.</span>styles</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">colors.</span>themes</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.colors.maps">module colors.maps</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.colors.maps.america">
+            function <span class="apidocSignatureSpan">colors.maps.</span>america
+            <span class="apidocSignatureSpan">(letter, i, exploded)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.colors.maps.rainbow">
+            function <span class="apidocSignatureSpan">colors.maps.</span>rainbow
+            <span class="apidocSignatureSpan">(letter, i, exploded)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.colors.maps.random">
+            function <span class="apidocSignatureSpan">colors.maps.</span>random
+            <span class="apidocSignatureSpan">(letter, i, exploded)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.colors.maps.zebra">
+            function <span class="apidocSignatureSpan">colors.maps.</span>zebra
+            <span class="apidocSignatureSpan">(letter, i, exploded)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.colors" id="apidoc.module.colors">module colors</a></h1>
+
+
+
+
+
+
+    <h2>
+        <a href="#apidoc.element.colors.america" id="apidoc.element.colors.america">
+        function <span class="apidocSignatureSpan">colors.</span>america
+        <span class="apidocSignatureSpan">(str)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">america = function (str) {
+  return sequencer(colors.maps[map], str);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+});
+
+addProperty(&#x22;random&#x22;, function(){
+  return colors.random(this);
+});
+
+addProperty(&#x22;america&#x22;, function(){
+  return colors.<span class="apidocCodeKeywordSpan">america</span>(this);
+});
+
+//
+// Iterate through all default styles and colors
+//
+var x = Object.keys(colors.styles);
+x.forEach(function (style) {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.colors.rainbow" id="apidoc.element.colors.rainbow">
+        function <span class="apidocSignatureSpan">colors.</span>rainbow
+        <span class="apidocSignatureSpan">(str)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">rainbow = function (str) {
+  return sequencer(colors.maps[map], str);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+```js
+var colors = require(&#x27;colors/safe&#x27;);
+
+console.log(colors.green(&#x27;hello&#x27;)); // outputs green text
+console.log(colors.red.underline(&#x27;i like cake and pies&#x27;)) // outputs red underlined text
+console.log(colors.inverse(&#x27;inverse the color&#x27;)); // inverses the color
+console.log(colors.<span class="apidocCodeKeywordSpan">rainbow</span>(&#x27;OMG Rainbows!&#x27;)); // rainbow
+console.log(colors.trap(&#x27;Run the trap&#x27;)); // Drops the bass
+
+```
+
+I prefer the first way. Some people seem to be afraid of extending `String.prototype` and prefer the second way.
+
+If you are writing good code you will never have an issue with the first approach. If you really don&#x27;t want to touch `String
+.prototype`, the second usage will not touch `String` native object.
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.colors.random" id="apidoc.element.colors.random">
+        function <span class="apidocSignatureSpan">colors.</span>random
+        <span class="apidocSignatureSpan">(str)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">random = function (str) {
+  return sequencer(colors.maps[map], str);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+});
+
+addProperty(&#x22;rainbow&#x22;, function(){
+  return colors.rainbow(this);
+});
+
+addProperty(&#x22;random&#x22;, function(){
+  return colors.<span class="apidocCodeKeywordSpan">random</span>(this);
+});
+
+addProperty(&#x22;america&#x22;, function(){
+  return colors.america(this);
+});
+
+//
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.colors.setTheme" id="apidoc.element.colors.setTheme">
+        function <span class="apidocSignatureSpan">colors.</span>setTheme
+        <span class="apidocSignatureSpan">(theme)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">setTheme = function (theme) {
+  if (typeof theme === &#x27;string&#x27;) {
+    try {
+      colors.themes[theme] = require(theme);
+      applyTheme(colors.themes[theme]);
+      return colors.themes[theme];
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  } else {
+    applyTheme(theme);
+  }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+### Using standard API
+
+```js
+
+var colors = require(&#x27;colors&#x27;);
+
+colors.<span class="apidocCodeKeywordSpan">setTheme</span>({
+silly: &#x27;rainbow&#x27;,
+input: &#x27;grey&#x27;,
+verbose: &#x27;cyan&#x27;,
+prompt: &#x27;grey&#x27;,
+info: &#x27;green&#x27;,
+data: &#x27;grey&#x27;,
+help: &#x27;cyan&#x27;,
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.colors.strip" id="apidoc.element.colors.strip">
+        function <span class="apidocSignatureSpan">colors.</span>strip
+        <span class="apidocSignatureSpan">(str)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">strip = function (str){
+  return (&#x22;&#x22; + str).replace(/\x1B\[\d+m/g, &#x27;&#x27;);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+      var exploded = this.split(&#x22;&#x22;), i = 0;
+      exploded = exploded.map(map);
+      return exploded.join(&#x22;&#x22;);
+    }
+};
+
+addProperty(&#x27;strip&#x27;, function () {
+  return colors.<span class="apidocCodeKeywordSpan">strip</span>(this);
+});
+
+addProperty(&#x27;stripColors&#x27;, function () {
+  return colors.strip(this);
+});
+
+addProperty(&#x22;trap&#x22;, function(){
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.colors.stripColors" id="apidoc.element.colors.stripColors">
+        function <span class="apidocSignatureSpan">colors.</span>stripColors
+        <span class="apidocSignatureSpan">(str)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">stripColors = function (str){
+  return (&#x22;&#x22; + str).replace(/\x1B\[\d+m/g, &#x27;&#x27;);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.colors.stylize" id="apidoc.element.colors.stylize">
+        function <span class="apidocSignatureSpan">colors.</span>stylize
+        <span class="apidocSignatureSpan">(str, style)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function stylize(str, style) {
+  if (!colors.enabled) {
+    return str+&#x27;&#x27;;
+  }
+
+  return ansiStyles[style].open + str + ansiStyles[style].close;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+//
+// Iterate through all default styles and colors
+//
+var x = Object.keys(colors.styles);
+x.forEach(function (style) {
+  addProperty(style, function () {
+    return colors.<span class="apidocCodeKeywordSpan">stylize</span>(this, style);
+  });
+});
+
+function applyTheme(theme) {
+  //
+  // Remark: This is a list of methods that exist
+  // on String that you should not overwrite.
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.colors.trap" id="apidoc.element.colors.trap">
+        function <span class="apidocSignatureSpan">colors.</span>trap
+        <span class="apidocSignatureSpan">(text, options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function runTheTrap(text, options) {
+  var result = &#x22;&#x22;;
+  text = text || &#x22;Run the trap, drop the bass&#x22;;
+  text = text.split(&#x27;&#x27;);
+  var trap = {
+    a: [&#x22;\u0040&#x22;, &#x22;\u0104&#x22;, &#x22;\u023a&#x22;, &#x22;\u0245&#x22;, &#x22;\u0394&#x22;, &#x22;\u039b&#x22;, &#x22;\u0414&#x22;],
+    b: [&#x22;\u00df&#x22;, &#x22;\u0181&#x22;, &#x22;\u0243&#x22;, &#x22;\u026e&#x22;, &#x22;\u03b2&#x22;, &#x22;\u0e3f&#x22;],
+    c: [&#x22;\u00a9&#x22;, &#x22;\u023b&#x22;, &#x22;\u03fe&#x22;],
+    d: [&#x22;\u00d0&#x22;, &#x22;\u018a&#x22;, &#x22;\u0500&#x22; , &#x22;\u0501&#x22; ,&#x22;\u0502&#x22;, &#x22;\u0503&#x22;],
+    e: [&#x22;\u00cb&#x22;, &#x22;\u0115&#x22;, &#x22;\u018e&#x22;, &#x22;\u0258&#x22;, &#x22;\u03a3&#x22;, &#x22;\u03be&#x22;, &#x22;\u04bc&#x22;, &#x22;\u0a6c&#x22;],
+    f: [&#x22;\u04fa&#x22;],
+    g: [&#x22;\u0262&#x22;],
+    h: [&#x22;\u0126&#x22;, &#x22;\u0195&#x22;, &#x22;\u04a2&#x22;, &#x22;\u04ba&#x22;, &#x22;\u04c7&#x22;, &#x22;\u050a&#x22;],
+    i: [&#x22;\u0f0f&#x22;],
+    j: [&#x22;\u0134&#x22;],
+    k: [&#x22;\u0138&#x22;, &#x22;\u04a0&#x22;, &#x22;\u04c3&#x22;, &#x22;\u051e&#x22;],
+    l: [&#x22;\u0139&#x22;],
+    m: [&#x22;\u028d&#x22;, &#x22;\u04cd&#x22;, &#x22;\u04ce&#x22;, &#x22;\u0520&#x22;, &#x22;\u0521&#x22;, &#x22;\u0d69&#x22;],
+    n: [&#x22;\u00d1&#x22;, &#x22;\u014b&#x22;, &#x22;\u019d&#x22;, &#x22;\u0376&#x22;, &#x22;\u03a0&#x22;, &#x22;\u048a&#x22;],
+    o: [&#x22;\u00d8&#x22;, &#x22;\u00f5&#x22;, &#x22;\u00f8&#x22;, &#x22;\u01fe&#x22;, &#x22;\u0298&#x22;, &#x22;\u047a&#x22;, &#x22;\u05dd&#x22;, &#x22;\u06dd&#x22;, &#x22;\u0e4f&#x22;],
+    p: [&#x22;\u01f7&#x22;, &#x22;\u048e&#x22;],
+    q: [&#x22;\u09cd&#x22;],
+    r: [&#x22;\u00ae&#x22;, &#x22;\u01a6&#x22;, &#x22;\u0210&#x22;, &#x22;\u024c&#x22;, &#x22;\u0280&#x22;, &#x22;\u042f&#x22;],
+    s: [&#x22;\u00a7&#x22;, &#x22;\u03de&#x22;, &#x22;\u03df&#x22;, &#x22;\u03e8&#x22;],
+    t: [&#x22;\u0141&#x22;, &#x22;\u0166&#x22;, &#x22;\u0373&#x22;],
+    u: [&#x22;\u01b1&#x22;, &#x22;\u054d&#x22;],
+    v: [&#x22;\u05d8&#x22;],
+    w: [&#x22;\u0428&#x22;, &#x22;\u0460&#x22;, &#x22;\u047c&#x22;, &#x22;\u0d70&#x22;],
+    x: [&#x22;\u04b2&#x22;, &#x22;\u04fe&#x22;, &#x22;\u04fc&#x22;, &#x22;\u04fd&#x22;],
+    y: [&#x22;\u00a5&#x22;, &#x22;\u04b0&#x22;, &#x22;\u04cb&#x22;],
+    z: [&#x22;\u01b5&#x22;, &#x22;\u0240&#x22;]
+  }
+  text.forEach(function(c){
+    c = c.toLowerCase();
+    var chars = trap[c] || [&#x22; &#x22;];
+    var rand = Math.floor(Math.random() * chars.length);
+    if (typeof trap[c] !== &#x22;undefined&#x22;) {
+      result += trap[c][rand];
+    } else {
+      result += c;
+    }
+  });
+  return result;
+
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+```js
+var colors = require(&#x27;colors/safe&#x27;);
+
+console.log(colors.green(&#x27;hello&#x27;)); // outputs green text
+console.log(colors.red.underline(&#x27;i like cake and pies&#x27;)) // outputs red underlined text
+console.log(colors.inverse(&#x27;inverse the color&#x27;)); // inverses the color
+console.log(colors.rainbow(&#x27;OMG Rainbows!&#x27;)); // rainbow
+console.log(colors.<span class="apidocCodeKeywordSpan">trap</span>(&#x27;Run the trap&#x27;)); // Drops the bass
+
+```
+
+I prefer the first way. Some people seem to be afraid of extending `String.prototype` and prefer the second way.
+
+If you are writing good code you will never have an issue with the first approach. If you really don&#x27;t want to touch `String
+.prototype`, the second usage will not touch `String` native object.
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.colors.zalgo" id="apidoc.element.colors.zalgo">
+        function <span class="apidocSignatureSpan">colors.</span>zalgo
+        <span class="apidocSignatureSpan">(text, options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function zalgo(text, options) {
+  text = text || &#x22;   he is here   &#x22;;
+  var soul = {
+    &#x22;up&#x22; : [
+      &#x27;̍&#x27;, &#x27;̎&#x27;, &#x27;̄&#x27;, &#x27;̅&#x27;,
+      &#x27;̿&#x27;, &#x27;̑&#x27;, &#x27;̆&#x27;, &#x27;̐&#x27;,
+      &#x27;͒&#x27;, &#x27;͗&#x27;, &#x27;͑&#x27;, &#x27;̇&#x27;,
+      &#x27;̈&#x27;, &#x27;̊&#x27;, &#x27;͂&#x27;, &#x27;̓&#x27;,
+      &#x27;̈&#x27;, &#x27;͊&#x27;, &#x27;͋&#x27;, &#x27;͌&#x27;,
+      &#x27;̃&#x27;, &#x27;̂&#x27;, &#x27;̌&#x27;, &#x27;͐&#x27;,
+      &#x27;̀&#x27;, &#x27;́&#x27;, &#x27;̋&#x27;, &#x27;̏&#x27;,
+      &#x27;̒&#x27;, &#x27;̓&#x27;, &#x27;̔&#x27;, &#x27;̽&#x27;,
+      &#x27;̉&#x27;, &#x27;ͣ&#x27;, &#x27;ͤ&#x27;, &#x27;ͥ&#x27;,
+      &#x27;ͦ&#x27;, &#x27;ͧ&#x27;, &#x27;ͨ&#x27;, &#x27;ͩ&#x27;,
+      &#x27;ͪ&#x27;, &#x27;ͫ&#x27;, &#x27;ͬ&#x27;, &#x27;ͭ&#x27;,
+      &#x27;ͮ&#x27;, &#x27;ͯ&#x27;, &#x27;̾&#x27;, &#x27;͛&#x27;,
+      &#x27;͆&#x27;, &#x27;̚&#x27;
+    ],
+    &#x22;down&#x22; : [
+      &#x27;̖&#x27;, &#x27;̗&#x27;, &#x27;̘&#x27;, &#x27;̙&#x27;,
+      &#x27;̜&#x27;, &#x27;̝&#x27;, &#x27;̞&#x27;, &#x27;̟&#x27;,
+      &#x27;̠&#x27;, &#x27;̤&#x27;, &#x27;̥&#x27;, &#x27;̦&#x27;,
+      &#x27;̩&#x27;, &#x27;̪&#x27;, &#x27;̫&#x27;, &#x27;̬&#x27;,
+      &#x27;̭&#x27;, &#x27;̮&#x27;, &#x27;̯&#x27;, &#x27;̰&#x27;,
+      &#x27;̱&#x27;, &#x27;̲&#x27;, &#x27;̳&#x27;, &#x27;̹&#x27;,
+      &#x27;̺&#x27;, &#x27;̻&#x27;, &#x27;̼&#x27;, &#x27;ͅ&#x27;,
+      &#x27;͇&#x27;, &#x27;͈&#x27;, &#x27;͉&#x27;, &#x27;͍&#x27;,
+      &#x27;͎&#x27;, &#x27;͓&#x27;, &#x27;͔&#x27;, &#x27;͕&#x27;,
+      &#x27;͖&#x27;, &#x27;͙&#x27;, &#x27;͚&#x27;, &#x27;̣&#x27;
+    ],
+    &#x22;mid&#x22; : [
+      &#x27;̕&#x27;, &#x27;̛&#x27;, &#x27;̀&#x27;, &#x27;́&#x27;,
+      &#x27;͘&#x27;, &#x27;̡&#x27;, &#x27;̢&#x27;, &#x27;̧&#x27;,
+      &#x27;̨&#x27;, &#x27;̴&#x27;, &#x27;̵&#x27;, &#x27;̶&#x27;,
+      &#x27;͜&#x27;, &#x27;͝&#x27;, &#x27;͞&#x27;,
+      &#x27;͟&#x27;, &#x27;͠&#x27;, &#x27;͢&#x27;, &#x27;̸&#x27;,
+      &#x27;̷&#x27;, &#x27;͡&#x27;, &#x27; ҉&#x27;
+    ]
+  },
+  all = [].concat(soul.up, soul.down, soul.mid),
+  zalgo = {};
+
+  function randomNumber(range) {
+    var r = Math.floor(Math.random() * range);
+    return r;
+  }
+
+  function is_char(character) {
+    var bool = false;
+    all.filter(function (i) {
+      bool = (i === character);
+    });
+    return bool;
+  }
+
+
+  function heComes(text, options) {
+    var result = &#x27;&#x27;, counts, l;
+    options = options || {};
+    options[&#x22;up&#x22;] =   typeof options[&#x22;up&#x22;]   !== &#x27;undefined&#x27; ? options[&#x22;up&#x22;]   : true;
+    options[&#x22;mid&#x22;] =  typeof options[&#x22;mid&#x22;]  !== &#x27;undefined&#x27; ? options[&#x22;mid&#x22;]  : true;
+    options[&#x22;down&#x22;] = typeof options[&#x22;down&#x22;] !== &#x27;undefined&#x27; ? options[&#x22;down&#x22;] : true;
+    options[&#x22;size&#x22;] = typeof options[&#x22;size&#x22;] !== &#x27;undefined&#x27; ? options[&#x22;size&#x22;] : &#x22;maxi&#x22;;
+    text = text.split(&#x27;&#x27;);
+    for (l in text) {
+      if (is_char(l)) {
+        continue;
+      }
+      result = result + text[l];
+      counts = {&#x22;up&#x22; : 0, &#x22;down&#x22; : 0, &#x22;mid&#x22; : 0};
+      switch (options.size) {
+      case &#x27;mini&#x27;:
+        counts.up = randomNumber(8);
+        counts.mid = randomNumber(2);
+        counts.down = randomNumber(8);
+        break;
+      case &#x27;maxi&#x27;:
+        counts.up = randomNumber(16) + 3;
+        counts.mid = randomNumber(4) + 1;
+        counts.down = randomNumber(64) + 3;
+        break;
+      default:
+        counts.up = randomNumber(8) + 1;
+        counts.mid = randomNumber(6) / 2;
+        counts.down = randomNumber(8) + 1;
+        break;
+      }
+
+      var arr = [&#x22;up&#x22;, &#x22;mid&#x22;, &#x22;down&#x22;];
+      for (var d in arr) {
+        var index = arr[d];
+        for (var i = 0 ; i &#x3c;= counts[index]; i++) {
+          if (options[index]) {
+            result = result + soul[index][randomNumber(soul[index].length)];
+          }
+        }
+      }
+    }
+    return result;
+  }
+  // don&#x27;t summon him
+  return heComes(text, options);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+});
+
+addProperty(&#x22;trap&#x22;, function(){
+  return colors.trap(this);
+});
+
+addProperty(&#x22;zalgo&#x22;, function(){
+  return colors.<span class="apidocCodeKeywordSpan">zalgo</span>(this);
+});
+
+addProperty(&#x22;zebra&#x22;, function(){
+  return colors.zebra(this);
+});
+
+addProperty(&#x22;rainbow&#x22;, function(){
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.colors.zebra" id="apidoc.element.colors.zebra">
+        function <span class="apidocSignatureSpan">colors.</span>zebra
+        <span class="apidocSignatureSpan">(str)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">zebra = function (str) {
+  return sequencer(colors.maps[map], str);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+});
+
+addProperty(&#x22;zalgo&#x22;, function(){
+  return colors.zalgo(this);
+});
+
+addProperty(&#x22;zebra&#x22;, function(){
+  return colors.<span class="apidocCodeKeywordSpan">zebra</span>(this);
+});
+
+addProperty(&#x22;rainbow&#x22;, function(){
+  return colors.rainbow(this);
+});
+
+addProperty(&#x22;random&#x22;, function(){
+...</pre></li>
+    </ul>
+
+
+
+
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.colors.maps" id="apidoc.module.colors.maps">module colors.maps</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.colors.maps.america" id="apidoc.element.colors.maps.america">
+        function <span class="apidocSignatureSpan">colors.maps.</span>america
+        <span class="apidocSignatureSpan">(letter, i, exploded)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">america = function (letter, i, exploded) {
+  if(letter === &#x22; &#x22;) return letter;
+  switch(i%3) {
+    case 0: return colors.red(letter);
+    case 1: return colors.white(letter)
+    case 2: return colors.blue(letter)
+  }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+});
+
+addProperty(&#x22;random&#x22;, function(){
+  return colors.random(this);
+});
+
+addProperty(&#x22;america&#x22;, function(){
+  return colors.<span class="apidocCodeKeywordSpan">america</span>(this);
+});
+
+//
+// Iterate through all default styles and colors
+//
+var x = Object.keys(colors.styles);
+x.forEach(function (style) {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.colors.maps.rainbow" id="apidoc.element.colors.maps.rainbow">
+        function <span class="apidocSignatureSpan">colors.maps.</span>rainbow
+        <span class="apidocSignatureSpan">(letter, i, exploded)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">rainbow = function (letter, i, exploded) {
+  if (letter === &#x22; &#x22;) {
+    return letter;
+  } else {
+    return colors[rainbowColors[i++ % rainbowColors.length]](letter);
+  }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+```js
+var colors = require(&#x27;colors/safe&#x27;);
+
+console.log(colors.green(&#x27;hello&#x27;)); // outputs green text
+console.log(colors.red.underline(&#x27;i like cake and pies&#x27;)) // outputs red underlined text
+console.log(colors.inverse(&#x27;inverse the color&#x27;)); // inverses the color
+console.log(colors.<span class="apidocCodeKeywordSpan">rainbow</span>(&#x27;OMG Rainbows!&#x27;)); // rainbow
+console.log(colors.trap(&#x27;Run the trap&#x27;)); // Drops the bass
+
+```
+
+I prefer the first way. Some people seem to be afraid of extending `String.prototype` and prefer the second way.
+
+If you are writing good code you will never have an issue with the first approach. If you really don&#x27;t want to touch `String
+.prototype`, the second usage will not touch `String` native object.
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.colors.maps.random" id="apidoc.element.colors.maps.random">
+        function <span class="apidocSignatureSpan">colors.maps.</span>random
+        <span class="apidocSignatureSpan">(letter, i, exploded)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">random = function (letter, i, exploded) {
+  return letter === &#x22; &#x22; ? letter : colors[available[Math.round(Math.random() * (available.length - 1))]](letter);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+});
+
+addProperty(&#x22;rainbow&#x22;, function(){
+  return colors.rainbow(this);
+});
+
+addProperty(&#x22;random&#x22;, function(){
+  return colors.<span class="apidocCodeKeywordSpan">random</span>(this);
+});
+
+addProperty(&#x22;america&#x22;, function(){
+  return colors.america(this);
+});
+
+//
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.colors.maps.zebra" id="apidoc.element.colors.maps.zebra">
+        function <span class="apidocSignatureSpan">colors.maps.</span>zebra
+        <span class="apidocSignatureSpan">(letter, i, exploded)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">zebra = function (letter, i, exploded) {
+  return i % 2 === 0 ? letter : colors.inverse(letter);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+});
+
+addProperty(&#x22;zalgo&#x22;, function(){
+  return colors.zalgo(this);
+});
+
+addProperty(&#x22;zebra&#x22;, function(){
+  return colors.<span class="apidocCodeKeywordSpan">zebra</span>(this);
+});
+
+addProperty(&#x22;rainbow&#x22;, function(){
+  return colors.rainbow(this);
+});
+
+addProperty(&#x22;random&#x22;, function(){
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
